@@ -39,10 +39,24 @@
                 </div>
                 <aside class="cart-summary">
                     <h2>Récapitulatif</h2>
+                    @if ($errors->has('cart'))
+                        <div class="form-errors" role="alert">{{ $errors->first('cart') }}</div>
+                    @endif
                     <div><span>Sous-total</span><strong>{{ number_format($total, 2, ',', ' ') }} €</strong></div>
-                    <div><span>Livraison</span><span>Calculée à l'étape suivante</span></div>
-                    <p>La livraison est offerte dès 100 € d'achat.</p>
-                    <button class="button button-dark checkout-button" type="button" disabled title="Le paiement en ligne sera disponible prochainement">Paiement bientôt disponible</button>
+                    <p>Envoyez votre demande à la boutique. Aucun paiement en ligne n’est effectué à cette étape ; la disponibilité sera confirmée par l’équipe.</p>
+                    @auth
+                        @if (! auth()->user()->isAdmin())
+                            <form action="{{ route('account.reservations.store') }}" method="POST">
+                                @csrf
+                                <button class="button button-dark checkout-button" type="submit">Demander une réservation <span aria-hidden="true">→</span></button>
+                            </form>
+                        @else
+                            <a class="button button-dark checkout-button" href="{{ route('admin.reservations.index') }}">Voir les réservations</a>
+                        @endif
+                    @else
+                        <a class="button button-dark checkout-button" href="{{ route('login') }}">Connectez-vous pour réserver</a>
+                        <a class="continue-shopping" href="{{ route('register') }}">Créer un compte client</a>
+                    @endauth
                     <a class="continue-shopping" href="{{ route('shop.index') }}">← Continuer mes achats</a>
                 </aside>
             </div>

@@ -17,10 +17,10 @@ class ExampleTest extends TestCase
         $this->seed(ProductSeeder::class);
     }
 
-    public function test_the_application_returns_a_successful_response(): void
+    public function test_the_application_starts_at_the_login_screen(): void
     {
         $response = $this->get('/');
 
-        $response->assertStatus(200);
+        $response->assertRedirect(route('login'));
     }
 }

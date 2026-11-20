@@ -20,7 +20,7 @@ class ShopTest extends TestCase
 
     public function test_shop_displays_products_and_filters_by_gender(): void
     {
-        $this->get('/')
+        $this->get('/shop')
             ->assertOk()
             ->assertSee('Chemise en lin')
             ->assertSee('Robe fluide');
